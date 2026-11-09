@@ -12,4 +12,13 @@
         <servlet-name>calServlet</servlet-name>
         <url-pattern>/calServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>myCalServlet</servlet-name>
+        <servlet-class>com.example.tomcat.servlet.MyCalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>myCalServlet</servlet-name>
+        <url-pattern>/myCalServlet</url-pattern>
+    </servlet-mapping>
 </web-app>

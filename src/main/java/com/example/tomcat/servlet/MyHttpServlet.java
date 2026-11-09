@@ -6,9 +6,9 @@ import com.example.tomcat.http.MyHttpServletResponse;
 public abstract class MyHttpServlet implements MyServlet {
     @Override
     public void service(MyHttpServletRequest request, MyHttpServletResponse response) {
-        if ("GET".equals(request.getMethod())) {
+        if ("GET".equalsIgnoreCase(request.getMethod())) {
             this.doGet(request, response);
-        } else if ("POST".equals(request.getMethod())) {
+        } else if ("POST".equalsIgnoreCase(request.getMethod())) {
             this.doPost(request, response);
         }
     }

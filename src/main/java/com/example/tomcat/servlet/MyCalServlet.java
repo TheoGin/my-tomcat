@@ -27,7 +27,7 @@ public class MyCalServlet extends MyHttpServlet {
         int num2 = WebUtils.parseInt(num2Str, 0);
         int result = num1 + num2;
         OutputStream outputStream = response.getOutputStream();
-        String resp = MyHttpServletResponse.RESPONSE_LINE_AND_HEADER + "<h1>" + num1 + " + " + num2 + " = " + result + "</h1>";
+        String resp = MyHttpServletResponse.RESPONSE_LINE_AND_HEADER + "<h1>" + num1 + " + " + num2 + " = " + result + "我的 tomcat"+ "</h1>";
 
         try {
             outputStream.write(resp.getBytes());
