@@ -2,6 +2,7 @@ package com.example.tomcat.handler;
 
 import com.example.tomcat.http.MyHttpServletRequest;
 import com.example.tomcat.http.MyHttpServletResponse;
+import com.example.tomcat.servlet.MyCalServlet;
 
 import java.io.*;
 import java.net.Socket;
@@ -45,11 +46,15 @@ public class MyRequestHandler implements Runnable {
             outputStream.close(); */
 
             MyHttpServletResponse myHttpServletResponse = new MyHttpServletResponse(socket.getOutputStream());
-            OutputStream outputStream = myHttpServletResponse.getOutputStream();
+            /* OutputStream outputStream = myHttpServletResponse.getOutputStream();
             String response = MyHttpServletResponse.RESPONSE_LINE_AND_HEADER + "<h1>Hello, World!世界2</h1>";
             outputStream.write(response.getBytes());
             outputStream.flush();
-            outputStream.close();
+            outputStream.close(); */
+
+            MyCalServlet myCalServlet = new MyCalServlet();
+            myCalServlet.doGet(myHttpServletRequest, myHttpServletResponse);
+
             // bufferedReader.close();
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -1,4 +1,19 @@
 package com.example.tomcat.servlet;
 
-public abstract class MyHttpServlet {
+import com.example.tomcat.http.MyHttpServletRequest;
+import com.example.tomcat.http.MyHttpServletResponse;
+
+public abstract class MyHttpServlet implements MyServlet {
+    @Override
+    public void service(MyHttpServletRequest request, MyHttpServletResponse response) {
+        if ("GET".equals(request.getMethod())) {
+            this.doGet(request, response);
+        } else if ("POST".equals(request.getMethod())) {
+            this.doPost(request, response);
+        }
+    }
+
+    public abstract void doGet(MyHttpServletRequest request, MyHttpServletResponse response);
+
+    public abstract void doPost(MyHttpServletRequest request, MyHttpServletResponse response);
 }
