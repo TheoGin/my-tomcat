@@ -1,5 +1,8 @@
 package com.example.tomcat.handler;
 
+import com.example.tomcat.http.MyHttpServletRequest;
+import com.example.tomcat.http.MyHttpServletResponse;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +21,9 @@ public class MyRequestHandler implements Runnable {
 
         try {
             InputStream inputStream = socket.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            MyHttpServletRequest myHttpServletRequest = new MyHttpServletRequest(inputStream);
+            System.out.println("myHttpServletRequest: " + myHttpServletRequest.toString());
+            /* BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             String requestMessage = null;
 
             System.out.println("============= 开始读取请求 =============");
@@ -29,16 +34,23 @@ public class MyRequestHandler implements Runnable {
 
                 System.out.println(requestMessage);
             }
-            System.out.println("============= 读取请求结束 =============");
+            System.out.println("============= 读取请求结束 ============="); */
 
-            OutputStream outputStream = socket.getOutputStream();
+            /* OutputStream outputStream = socket.getOutputStream();
             String responseLineAndHeader = "HTTP/1.1 200 OK\r\n" +
                     "Content-Type: text/html; charset=UTF-8\r\n\r\n";
             String response = responseLineAndHeader + "<h1>Hello, World!世界2</h1>";
             outputStream.write(response.getBytes());
             outputStream.flush();
+            outputStream.close(); */
+
+            MyHttpServletResponse myHttpServletResponse = new MyHttpServletResponse(socket.getOutputStream());
+            OutputStream outputStream = myHttpServletResponse.getOutputStream();
+            String response = MyHttpServletResponse.RESPONSE_LINE_AND_HEADER + "<h1>Hello, World!世界2</h1>";
+            outputStream.write(response.getBytes());
+            outputStream.flush();
             outputStream.close();
-            bufferedReader.close();
+            // bufferedReader.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
