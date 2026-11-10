@@ -94,15 +94,26 @@ public class MyRequestHandler implements Runnable {
             /* MyCalServlet myCalServlet = new MyCalServlet();
             myCalServlet.doGet(myHttpServletRequest, myHttpServletResponse); */
             String uri = myHttpServletRequest.getUri();
+
+            if (uri.endsWith(".html")) {
+                getStaticResourceByUri(uri, myHttpServletResponse);
+                return;
+            }
+
             String servletName = servletUrlMapping.get(uri);
             // Exception in thread "Thread-1" java.lang.NullPointerException
             // 解决1：用 HashMap
             // 解决2：给空字符串
-            if (servletName == null) {
-                servletName = ""; // 没有解决，先尝试一下 HashMap
+            if (servletName != null) {
+                MyServlet myServlet = servletMapping.get(servletName);
+                myServlet.service(myHttpServletRequest, myHttpServletResponse);
+            } else {
+                OutputStream outputStream = myHttpServletResponse.getOutputStream();
+                outputStream.write(MyHttpServletResponse.RESPONSE_LINE_AND_HEADER.getBytes());
+                outputStream.write("404 Not Found".getBytes());
+                outputStream.flush();
+                outputStream.close();
             }
-            MyServlet myServlet = servletMapping.get(servletName);
-            myServlet.service(myHttpServletRequest, myHttpServletResponse);
 
             // bufferedReader.close();
         } catch (IOException e) {
@@ -114,6 +125,25 @@ public class MyRequestHandler implements Runnable {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            }
+        }
+    }
+
+    private void getStaticResourceByUri(String uri, MyHttpServletResponse myHttpServletResponse) {
+        URL url = MyRequestHandler.class.getResource(uri);
+        File file = new File(url.getFile());
+        if (file.exists() && file.isFile()) {
+            try {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                byte[] bytes = new byte[fileInputStream.available()];
+                fileInputStream.read(bytes);
+                OutputStream outputStream = myHttpServletResponse.getOutputStream();
+                outputStream.write(MyHttpServletResponse.RESPONSE_LINE_AND_HEADER.getBytes());
+                outputStream.write(bytes);
+                outputStream.flush();
+                fileInputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
