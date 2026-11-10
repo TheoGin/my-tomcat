@@ -32,14 +32,13 @@ public class MyHttpServletRequest {
                 uri = uriPartWithParams.substring(0, queryIndex);
                 String query = uriPartWithParams.substring(queryIndex + 1);
 
-                if (query.contains("&")) {
-                    String[] params = query.split("&");
-                    for (String param : params) {
-                        if (param.contains("=")) {
-                            String[] entry = param.split("=");
-                            if (entry.length == 2) {
-                                parameterMap.put(entry[0], entry[1]);
-                            }
+                // split("&") 对不含 & 的单个参数同样适用（返回单元素数组）
+                String[] params = query.split("&");
+                for (String param : params) {
+                    if (param.contains("=")) {
+                        String[] entry = param.split("=");
+                        if (entry.length == 2) {
+                            parameterMap.put(entry[0], entry[1]);
                         }
                     }
                 }
