@@ -16,8 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MyRequestHandler implements Runnable {
 
     private Socket socket;
-    private static ConcurrentHashMap<String, MyServlet> servletMapping = new ConcurrentHashMap<>();
-    private static ConcurrentHashMap<String, String> servletUrlMapping = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, MyServlet> servletMapping = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, String> servletUrlMapping = new ConcurrentHashMap<>();
 
     public MyRequestHandler(Socket socket) {
         this.socket = socket;
